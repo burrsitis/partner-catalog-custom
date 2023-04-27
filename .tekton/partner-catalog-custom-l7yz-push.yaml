@@ -161,6 +161,16 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
+    - name: trusted-content
+      taskSpec:
+        steps:
+         - name: scan
+           image: redhat/ubi8
+           script: |
+             #!/bin/sh
+             echo "{\"result\":\"FAILURE\",\"timestamp\":\"1680370399\",\"note\":\"For more details please visit the logs in workspace of Tekton tasks.\",\"namespace\":\"optional_checks\",\"successes\":1,\"failures\":1,\"warnings\":0}"
+      runAfter:
+      - clone-repository
     - name: build-container
       params:
       - name: IMAGE
@@ -294,6 +304,16 @@ spec:
       workspaces:
       - name: workspace
         workspace: workspace
+    - name: roxctl-scan
+      runAfter:
+      - clone-repository
+      taskSpec:      
+        steps:
+         - name: scan
+           image: redhat/ubi8
+           script: |
+             #!/bin/sh
+             echo "roxctl-scan"
     - name: clamav-scan
       params:
       - name: image-digest
