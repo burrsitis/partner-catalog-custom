@@ -285,7 +285,7 @@ spec:
         - "false"
     - name: roxctl-scan
       runAfter:
-      - clone-repository
+      - build-container
       taskSpec:      
         steps:
          - name: scan
