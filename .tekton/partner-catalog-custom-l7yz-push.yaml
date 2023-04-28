@@ -283,6 +283,16 @@ spec:
         operator: in
         values:
         - "false"
+    - name: roxctl-scan
+      runAfter:
+      - clone-repository
+      taskSpec:      
+        steps:
+         - name: scan
+           image: redhat/ubi8
+           script: |
+             #!/bin/sh
+             echo "roxctl-scan"    
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
@@ -304,16 +314,6 @@ spec:
       workspaces:
       - name: workspace
         workspace: workspace
-    - name: roxctl-scan
-      runAfter:
-      - clone-repository
-      taskSpec:      
-        steps:
-         - name: scan
-           image: redhat/ubi8
-           script: |
-             #!/bin/sh
-             echo "roxctl-scan"
     - name: clamav-scan
       params:
       - name: image-digest
