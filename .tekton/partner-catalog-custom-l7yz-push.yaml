@@ -163,14 +163,58 @@ spec:
         workspace: workspace
     - name: trusted-content
       taskSpec:
+        results:
+        - name: CLAIR_SCAN_RESULT
+          description: CRDA scan result
+        - name: HACBS_TEST_OUTPUT
+          description: CRDA scan test output
+        workspaces:
+          - name: source
         steps:
-         - name: scan
-           image: redhat/ubi8
-           script: |
-             #!/bin/sh
-             echo "{\"result\":\"FAILURE\",\"timestamp\":\"1680370399\",\"note\":\"For more details please visit the logs in workspace of Tekton tasks.\",\"namespace\":\"optional_checks\",\"successes\":1,\"failures\":1,\"warnings\":0}"
+          - name: run-redhat-crda-scan-step
+            image: quay.io/lrangine/crda-maven:11.0
+            workingDir: "$(workspaces.source.path)"
+            env:
+              - name: AUTH_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: crda-scan-secrets
+                    key: AUTH_TOKEN
+              - name: CONSENT_TELEMETRY
+                value: "false"
+              - name: CRDA_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: crda-scan-secrets
+                    key: CRDA_KEY
+              - name: HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: crda-scan-secrets
+                    key: HOST
+            script: |
+              #!/usr/bin/env bash
+              /crda.sh pom.xml crda_scan_output.json
+              echo 'CRDA Scan is completed'
+              echo 'Printing scan results'
+              more crda_scan_output.json
+              echo 'Formatting the Task Results'
+              jq -rce \
+              '{vulnerabilities:{
+              critical: (.report."critical_vulnerabilities"),
+              high: (.report."high_vulnerabilities"),
+              medium: (.report."medium_vulnerabilities"),
+              low: (.report."low_vulnerabilities")
+              }}' crda_scan_output.json | tee $(results.CLAIR_SCAN_RESULT.path)
+
+              NOTE="Task $(context.task.name) completed: Refer to Tekton task result CLAIR_SCAN_RESULT for vulnerabilities scanned by CRDA."
+              HACBS_TEST_OUTPUT="SUCCESS $NOTE"
+              echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)
       runAfter:
-      - clone-repository
+        - clone-repository
+      workspaces:
+      - name: source
+        workspace: workspace
     - name: build-container
       params:
       - name: IMAGE
