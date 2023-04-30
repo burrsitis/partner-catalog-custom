@@ -328,6 +328,11 @@ spec:
         values:
         - "false"
     - name: roxctl-scan
+      params:
+      - name: image-digest
+        value: $(tasks.build-container.results.IMAGE_DIGEST)
+      - name: image-url
+        value: $(tasks.build-container.results.IMAGE_URL)
       runAfter:
       - build-container
       taskSpec:      
@@ -336,7 +341,7 @@ spec:
            image: redhat/ubi8
            script: |
              #!/bin/sh
-             echo "roxctl-scan"    
+             echo "roxctl-scan: " + IMAGE_URL
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
