@@ -341,7 +341,7 @@ spec:
            image: redhat/ubi8
            script: |
              #!/bin/sh
-             echo "roxctl-scan: " + $IMAGE_URL
+             echo "roxctl-scan: $IMAGE_URL"
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
