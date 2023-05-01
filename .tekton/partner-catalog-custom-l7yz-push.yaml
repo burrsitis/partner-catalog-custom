@@ -335,6 +335,8 @@ spec:
           value: rox_api_token
         - name: output_format
           value: table
+        - name: image 
+          value: $(tasks.build-container.results.IMAGE_URL)
         - name: image-digest
           value: $(tasks.build-container.results.IMAGE_DIGEST)
       runAfter:
