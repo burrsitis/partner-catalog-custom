@@ -355,7 +355,6 @@ spec:
               value: $(params.rox_central_endpoint)
            script: |
             #!/usr/bin/env bash
-            set +x
             export NO_COLOR="True"
             echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
             echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
