@@ -354,15 +354,15 @@ spec:
             - name: ROX_CENTRAL_ENDPOINT
               value: $(params.rox_central_endpoint)
            script: |
-            #!/usr/bin/env bash
-            echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
-            echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
-            echo "Getting roxctl"
-            curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl
-            chmod +x ./roxctl 
-            echo "## Scanning image $(params.image)@$(params.image_digest)"
-            ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
-            echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
+             #!/usr/bin/env bash
+             echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
+             echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
+             echo "Getting roxctl"
+             curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl
+             chmod +x ./roxctl 
+             echo "## Scanning image $(params.image)@$(params.image_digest)"
+             ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
+             echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
