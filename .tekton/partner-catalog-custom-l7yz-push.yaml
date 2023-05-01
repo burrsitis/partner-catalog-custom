@@ -329,31 +329,36 @@ spec:
         - "false"
     - name: roxctl-scan
       params:
-        - name: rox_central_endpoint
-          value: roxsecrets
-        - name: rox_api_token
-          value: roxsecrets
-        - name: output_format
-          value: table
-        - name: image 
-          value: $(tasks.build-container.results.IMAGE_URL)
-        - name: image_digest
-          value: $(tasks.build-container.results.IMAGE_DIGEST)
+      - name: rox_central_endpoint
+        value: roxsecrets
+      - name: rox_api_token
+        value: roxsecrets
+      - name: output_format
+        value: table
+      - name: image 
+        value: $(tasks.build-container.results.IMAGE_URL)
+      - name: image_digest
+        value: $(tasks.build-container.results.IMAGE_DIGEST)
       runAfter:
       - build-container
-      taskSpec:      
+      taskSpec:
+        results:
+        - name: CLAIR_SCAN_RESULT
+          description: roxctl scan result
+        - name: HACBS_TEST_OUTPUT
+          description: roxctl scan test output
         steps:
-         - name: roxctl-image-scan
-           image: redhat/ubi8
-           env:
-            - name: ROX_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: $(params.rox_api_token)
-                  key: token
-            - name: ROX_CENTRAL_ENDPOINT
-              value: $(params.rox_central_endpoint)
-           script: |
+          - name: roxctl-image-scan-burr
+            image: redhat/ubi8
+            env:
+              - name: ROX_API_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: $(params.rox_api_token)
+                    key: token
+              - name: ROX_CENTRAL_ENDPOINT
+                value: $(params.rox_central_endpoint)
+            script: |
              #!/usr/bin/env bash
              echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
              echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
