@@ -329,19 +329,37 @@ spec:
         - "false"
     - name: roxctl-scan
       params:
-      - name: image-digest
-        value: $(tasks.build-container.results.IMAGE_DIGEST)
-      - name: image-url
-        value: $(tasks.build-container.results.IMAGE_URL)
+        - name: rox_central_endpoint
+          value: rox_central_endpoint
+        - name: rox_api_token
+          value: rox_api_token
+        - name: output_format
+          value: table
+        - name: image-digest
+          value: $(tasks.build-container.results.IMAGE_DIGEST)
       runAfter:
       - build-container
       taskSpec:      
         steps:
          - name: scan
            image: redhat/ubi8
+           env:
+            - name: ROX_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: $(params.rox_api_token)
+                  key: token
+            - name: ROX_CENTRAL_ENDPOINT
+              value: $(params.rox_central_endpoint)
            script: |
-             #!/bin/sh
-             echo "roxctl-scan: $image-url"
+            #!/usr/bin/env bash
+            set +x
+            export NO_COLOR="True"
+            curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl  > /dev/null; echo "Getting roxctl"
+            chmod +x ./roxctl > /dev/null
+            echo "## Scanning image $(params.image)@$(params.image_digest)"
+            ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
+            echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
