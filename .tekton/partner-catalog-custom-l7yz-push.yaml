@@ -359,7 +359,7 @@ spec:
             export NO_COLOR="True"
             echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
             echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
-            curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl  > /dev/null; echo "Getting roxctl"
+            curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl; echo "Getting roxctl"
             chmod +x ./roxctl 
             echo "## Scanning image $(params.image)@$(params.image_digest)"
             ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
