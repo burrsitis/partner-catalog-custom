@@ -343,7 +343,7 @@ spec:
       - build-container
       taskSpec:      
         steps:
-         - name: scan
+         - name: roxctl-image-scan
            image: redhat/ubi8
            env:
             - name: ROX_API_TOKEN
