@@ -358,7 +358,7 @@ spec:
             set +x
             export NO_COLOR="True"
             curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl  > /dev/null; echo "Getting roxctl"
-            chmod +x ./roxctl > /dev/null
+            chmod +x ./roxctl 
             echo "## Scanning image $(params.image)@$(params.image_digest)"
             ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
             echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
