@@ -337,7 +337,7 @@ spec:
           value: table
         - name: image 
           value: $(tasks.build-container.results.IMAGE_URL)
-        - name: image-digest
+        - name: image_digest
           value: $(tasks.build-container.results.IMAGE_DIGEST)
       runAfter:
       - build-container
