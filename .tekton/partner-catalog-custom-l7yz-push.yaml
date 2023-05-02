@@ -329,8 +329,6 @@ spec:
         - "false"
     - name: roxctl-scan
       params:
-      - name: output_format
-        value: table
       - name: image 
         value: $(tasks.build-container.results.IMAGE_URL)
       - name: image_digest
@@ -365,7 +363,7 @@ spec:
               curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl
               chmod +x ./roxctl 
               echo "## Scanning image $(params.image)@$(params.image_digest)"
-              ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
+              ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output json 
               echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
               HACBS_TEST_OUTPUT="SUCCESS "
               echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)  
