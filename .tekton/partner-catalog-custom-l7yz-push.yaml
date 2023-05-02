@@ -206,7 +206,6 @@ spec:
               medium: (.report."medium_vulnerabilities"),
               low: (.report."low_vulnerabilities")
               }}' crda_scan_output.json | tee $(results.CLAIR_SCAN_RESULT.path)
-
               NOTE="Task $(context.task.name) completed: Refer to Tekton task result CLAIR_SCAN_RESULT for vulnerabilities scanned by CRDA."
               HACBS_TEST_OUTPUT="SUCCESS $NOTE"
               echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)
