@@ -194,6 +194,7 @@ spec:
                     key: HOST
             script: |
               #!/usr/bin/env bash
+              echo 'ready to scan'
               /crda.sh pom.xml crda_scan_output.json
               echo 'CRDA Scan is completed'
               echo 'Printing scan results'
