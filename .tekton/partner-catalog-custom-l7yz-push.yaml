@@ -329,10 +329,6 @@ spec:
         - "false"
     - name: roxctl-scan
       params:
-      - name: rox_central_endpoint
-        value: roxsecrets
-      - name: rox_api_token
-        value: roxsecrets
       - name: output_format
         value: table
       - name: image 
@@ -348,16 +344,19 @@ spec:
         - name: HACBS_TEST_OUTPUT
           description: roxctl scan test output
         steps:
-          - name: roxctl-image-scan-burr
+          - name: roxctl-image-scan
             image: redhat/ubi8
             env:
               - name: ROX_API_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: $(params.rox_api_token)
-                    key: token
-              - name: ROX_CENTRAL_ENDPOINT
-                value: $(params.rox_central_endpoint)
+                    name: roxsecrets
+                    key: rox_api_token
+              - name: ROX_CENTRAL_ENDPOINT 
+                valueFrom:
+                  secretKeyRef:
+                    name: roxsecrets
+                    key: rox_central_endpoint
             script: |
               #!/usr/bin/env bash
               echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
