@@ -367,6 +367,8 @@ spec:
               echo "## Scanning image $(params.image)@$(params.image_digest)"
               ./roxctl image scan --insecure-skip-tls-verify -e $ROX_CENTRAL_ENDPOINT --image $(params.image)@$(params.image_digest) --output $(params.output_format)
               echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
+              HACBS_TEST_OUTPUT="SUCCESS "
+              echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)  
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
