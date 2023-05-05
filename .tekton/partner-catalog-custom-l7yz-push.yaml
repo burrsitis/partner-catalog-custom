@@ -164,10 +164,10 @@ spec:
     - name: trusted-content
       taskSpec:
         results:
-        - name: CLAIR_SCAN_RESULT
-          description: CRDA scan result
+        - name: CVE_SCAN_RESULT
+          description: trusted content scan result
         - name: HACBS_TEST_OUTPUT
-          description: CRDA scan test output
+          description: trusted content output
         workspaces:
           - name: source
         steps:
@@ -206,8 +206,8 @@ spec:
               high: (.report."high_vulnerabilities"),
               medium: (.report."medium_vulnerabilities"),
               low: (.report."low_vulnerabilities")
-              }}' crda_scan_output.json | tee $(results.CLAIR_SCAN_RESULT.path)
-              NOTE="Task $(context.task.name) completed: Refer to Tekton task result CLAIR_SCAN_RESULT for vulnerabilities scanned by CRDA."
+              }}' crda_scan_output.json | tee $(results.CVE_SCAN_RESULT.path)
+              NOTE="Task $(context.task.name) completed: Refer to Tekton task result CVE_SCAN_RESULT for vulnerabilities scanned by CRDA."
               HACBS_TEST_OUTPUT="SUCCESS $NOTE"
               echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)
       runAfter:
