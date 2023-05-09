@@ -337,7 +337,7 @@ spec:
       - build-container
       taskSpec:
         results:
-        - name: CLAIR_SCAN_RESULT
+        - name: CVE_SCAN_RESULT
           description: roxctl scan result
         - name: HACBS_TEST_OUTPUT
           description: roxctl scan test output
@@ -374,10 +374,10 @@ spec:
               high: (.result.summary.IMPORTANT),
               medium: (.result.summary.MODERATE),
               low: (.result.summary.LOW)
-              }}' roxctl_output.json | tee $(results.CLAIR_SCAN_RESULT.path)              
+              }}' roxctl_output.json | tee $(results.CVE_SCAN_RESULT.path)              
               echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
-              HACBS_TEST_OUTPUT="SUCCESS "
-              echo "${HACBS_TEST_OUTPUT}" | tee $(results.HACBS_TEST_OUTPUT.path)  
+              TEST_OUTPUT="See CVE_SCAN_RESULT"
+              echo "${TEST_OUTPUT}" | tee $(results.TEST_OUTPUT.path)
     - name: sast-snyk-check
       params:
       - name: SNYK_SECRET
