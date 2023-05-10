@@ -164,7 +164,7 @@ spec:
     - name: trusted-content
       taskSpec:
         results:
-        - name: CLAIR_SCAN_RESULT
+        - name: CVE_SCAN_RESULT
           description: trusted content scan result
         - name: TEST_OUTPUT
           description: trusted content output
@@ -206,8 +206,8 @@ spec:
               high: (.report."high_vulnerabilities"),
               medium: (.report."medium_vulnerabilities"),
               low: (.report."low_vulnerabilities")
-              }}' crda_scan_output.json | tee $(results.CLAIR_SCAN_RESULT.path)
-              NOTE="Task $(context.task.name) completed: Refer to Tekton task result CLAIR_SCAN_RESULT for vulnerabilities scanned by CRDA."
+              }}' crda_scan_output.json | tee $(results.CVE_SCAN_RESULT.path)
+              NOTE="Task $(context.task.name) completed: Refer to Tekton task result CVE_SCAN_RESULT for vulnerabilities scanned by RHTC."
               TEST_OUTPUT="SUCCESS $NOTE"
               echo "${TEST_OUTPUT}" | tee $(results.TEST_OUTPUT.path)
       runAfter:
@@ -339,7 +339,7 @@ spec:
         results:
         - name: CVE_SCAN_RESULT
           description: roxctl scan result
-        - name: HACBS_TEST_OUTPUT
+        - name: TEST_OUTPUT
           description: roxctl scan test output
         steps:
           - name: roxctl-image-scan
