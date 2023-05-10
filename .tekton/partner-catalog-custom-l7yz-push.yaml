@@ -309,24 +309,6 @@ spec:
       workspaces:
       - name: test-ws
         workspace: workspace
-    - name: clair-scan
-      params:
-      - name: image-digest
-        value: $(tasks.build-container.results.IMAGE_DIGEST)
-      - name: image-url
-        value: $(tasks.build-container.results.IMAGE_URL)
-      - name: docker-auth
-        value: $(tasks.init.results.container-registry-secret)
-      runAfter:
-      - build-container
-      taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-clair-scan:0.1@sha256:1b4951e91fdfb3188d459d0abac411a6364da5cb135e81fb4a84bbd782bb545d
-        name: clair-scan
-      when:
-      - input: $(params.skip-checks)
-        operator: in
-        values:
-        - "false"
     - name: roxctl-scan
       params:
       - name: image 
@@ -376,7 +358,7 @@ spec:
               low: (.result.summary.LOW)
               }}' roxctl_output.json | tee $(results.CVE_SCAN_RESULT.path)              
               echo "## Go to https://$ROX_CENTRAL_ENDPOINT/main/vulnerability-management/image/$(params.image_digest) to check more info"
-              TEST_OUTPUT="See CVE_SCAN_RESULT"
+              TEST_OUTPUT="Details in the logs"
               echo "${TEST_OUTPUT}" | tee $(results.TEST_OUTPUT.path)
     - name: sast-snyk-check
       params:
