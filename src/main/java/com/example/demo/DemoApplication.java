@@ -27,7 +27,7 @@ public class DemoApplication {
         return modelAndView;
     }
     
-        
+    
     @RequestMapping("/hello")
     String home() {
       Locale locale;
