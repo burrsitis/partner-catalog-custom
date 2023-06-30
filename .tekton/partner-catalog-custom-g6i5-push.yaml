@@ -352,7 +352,7 @@ spec:
               echo "ROX_CENTRAL_ENDPOINT: " + $ROX_CENTRAL_ENDPOINT
               echo "ROX_API_TOKEN: " + $ROX_API_TOKEN
               jq --version
-              echo "did you see the jq version ^"
+              echo "jq version ^"
               echo "Getting roxctl"
               curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl
               chmod +x ./roxctl 
